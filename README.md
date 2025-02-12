@@ -122,3 +122,20 @@ Make sure to handle the responce if the requested books was not there in every o
 If your GitHub username is `johnDoe` and the repository name is `assignment-repo`, the submission link would look like this:
 **`https://github.com/johnDoe/assignment-repo`**
 ````
+
+### Testing the API
+
+Create a new book in the library with the following details:
+`curl -X POST http://localhost:3000/books -H "Content-Type: application/json" -d '{"book_id": "1", "title": "Book Title", "author": "Author Name"}'`
+
+Retrieve the list of all books in the library:
+`curl http://localhost:3000/books`
+
+Retrieve the details of a specific book by ID:
+`curl http://localhost:3000/books/1`
+
+Update the details of an existing book:
+`curl -X PUT http://localhost:3000/books/1 -H "Content-Type: application/json" -d '{"title": "Updated Title"}'`
+
+Delete a book from the library:
+`curl -X DELETE http://localhost:3000/books/1`

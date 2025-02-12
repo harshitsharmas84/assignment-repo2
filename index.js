@@ -1,22 +1,25 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const fs = require("fs");
-const path = require("path");
+const fs = require("fs"); // File System
+const path = require("path"); // Path module
 
 const app = express();
 app.use(bodyParser.json());
 
-const dataFilePath = path.join(__dirname, "data.json");
+const dataFilePath = path.join(__dirname, "data.json"); // Path to the data file
 
+// Helper function to read Data from the file
 const readData = () => {
   const data = fs.readFileSync(dataFilePath);
   return JSON.parse(data);
 };
 
+// Helper function to write data to the file
 const writeData = (data) => {
   fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
 };
 
+//Addig a new Book
 app.post("/books", (req, res) => {
   const books = readData();
   const newBook = req.body;
@@ -25,11 +28,13 @@ app.post("/books", (req, res) => {
   res.status(201).send(newBook);
 });
 
+//Get all books
 app.get("/books", (req, res) => {
   const books = readData();
   res.send(books);
 });
 
+//Get a single book
 app.get("/books/:id", (req, res) => {
   const books = readData();
   const book = books.find((b) => b.book_id === req.params.id);
@@ -39,6 +44,8 @@ app.get("/books/:id", (req, res) => {
     res.status(404).json({ message: "Book not found" });
   }
 });
+
+//Update a book
 
 app.put("/books/:id", (req, res) => {
   const books = readData();
@@ -53,6 +60,7 @@ app.put("/books/:id", (req, res) => {
   }
 });
 
+//Delete a book
 app.delete("/books/:id", (req, res) => {
   const books = readData();
   const index = books.findIndex((b) => b.book_id === req.params.id);
@@ -65,6 +73,7 @@ app.delete("/books/:id", (req, res) => {
   }
 });
 
+//Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
